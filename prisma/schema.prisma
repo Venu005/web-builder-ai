@@ -25,11 +25,12 @@ enum MessageType {
 }
 
 model Project {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  messages Message[]
+  userId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
 }
 
 model Message {
