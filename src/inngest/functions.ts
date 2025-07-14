@@ -25,7 +25,7 @@ export const codeAgentFunction = inngest.createFunction(
   async ({ event, step }) => {
     const sandboxId = await step.run("get-sandbox-id", async () => {
       const sandbox = await Sandbox.create("nextjs-venu-web-ai-test");
-
+      await sandbox.setTimeout(60_000 * 10 * 3);
       return sandbox.sandboxId;
     });
     const previousMessages = await step.run(
@@ -39,6 +39,7 @@ export const codeAgentFunction = inngest.createFunction(
           orderBy: {
             createdAt: "desc",
           },
+          take: 5,
         });
         for (const message of messages) {
           formattedMessages.push({
@@ -47,7 +48,7 @@ export const codeAgentFunction = inngest.createFunction(
             type: "text",
           });
         }
-        return formattedMessages;
+        return formattedMessages.reverse();
       }
     );
     const state = createState<AgentState>(
