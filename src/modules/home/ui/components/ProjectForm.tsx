@@ -38,12 +38,17 @@ export const ProjectForm = () => {
       onSuccess: (data) => {
         //form.reset();
         queryClient.invalidateQueries(tprc.projects.getMany.queryOptions());
+        queryClient.invalidateQueries(tprc.usage.status.queryOptions());
+
         router.push(`/projects/${data.id}`);
       },
       onError: (error) => {
         toast.error(error.message);
         if (error.data?.code === "UNAUTHORIZED") {
           clerk.openSignIn();
+        }
+        if (error.data?.code === "TOO_MANY_REQUESTS") {
+          router.push("/pricing");
         }
       },
     })
@@ -66,6 +71,7 @@ export const ProjectForm = () => {
   };
   return (
     <Form {...form}>
+      {}
       <section className="space-y-6">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
